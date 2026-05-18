@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crest - Offline Trail Maps | Support</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green-deep:  #0a1f12;
+    --green-dark:  #0d2b1d;
+    --green-mid:   #1a4a2e;
+    --green-main:  #2d6a4f;
+    --green-light: #52b788;
+    --green-pale:  #95d5b2;
+    --cream:       #f4f1eb;
+    --text-dark:   #1a1a1a;
+    --text-mid:    #4a5568;
+    --text-light:  #718096;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--green-deep);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 0%, rgba(82,183,136,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(45,106,79,0.2) 0%, transparent 50%);
+  }
+
+  .hero-icon {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, var(--green-light), var(--green-main));
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 32px;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(82,183,136,0.3);
+  }
+
+  .hero-icon svg {
+    width: 56px;
+    height: 56px;
+    fill: white;
+  }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(42px, 7vw, 80px);
+    color: white;
+    line-height: 1.05;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--green-pale);
+  }
+
+  .hero p {
+    font-size: 18px;
+    color: rgba(255,255,255,0.6);
+    max-width: 440px;
+    line-height: 1.7;
+    position: relative;
+    margin-bottom: 48px;
+  }
+
+  .badge-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .badge {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--green-pale);
+    padding: 8px 18px;
+    border-radius: 99px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.3);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    animation: bounce 2s infinite;
+  }
+
+  .scroll-hint::after {
+    content: '';
+    width: 1px;
+    height: 32px;
+    background: rgba(255,255,255,0.2);
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* ── FEATURES ── */
+  .features {
+    padding: 100px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--green-main);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.1;
+    margin-bottom: 60px;
+    color: var(--text-dark);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2px;
+    background: #e2ddd4;
+    border: 2px solid #e2ddd4;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .feat {
+    background: var(--cream);
+    padding: 36px 32px;
+    transition: background 0.2s;
+  }
+
+  .feat:hover { background: #ede9e1; }
+
+  .feat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 13px;
+    color: var(--green-main);
+    margin-bottom: 16px;
+    opacity: 0.7;
+  }
+
+  .feat h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-dark);
+  }
+
+  .feat p {
+    font-size: 14px;
+    color: var(--text-mid);
+    line-height: 1.7;
+  }
+
+  /* ── FAQ ── */
+  .faq-section {
+    background: var(--green-dark);
+    padding: 100px 24px;
+  }
+
+  .faq-inner {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .faq-section .section-label { color: var(--green-pale); }
+  .faq-section .section-title { color: white; }
+
+  .faq-item {
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding: 24px 0;
+  }
+
+  .faq-q {
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .faq-q::before {
+    content: 'Q';
+    background: var(--green-main);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 7px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .faq-a {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.8;
+    padding-left: 34px;
+  }
+
+  /* ── CONTACT ── */
+  .contact-section {
+    padding: 100px 24px;
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .contact-card {
+    background: var(--green-dark);
+    border-radius: 24px;
+    padding: 60px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-card::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(82,183,136,0.2) 0%, transparent 70%);
+  }
+
+  .contact-card h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    color: white;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .contact-card p {
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 32px;
+    font-size: 15px;
+    line-height: 1.7;
+    position: relative;
+  }
+
+  .email-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--green-light);
+    color: var(--green-deep);
+    font-weight: 600;
+    font-size: 15px;
+    padding: 16px 32px;
+    border-radius: 14px;
+    text-decoration: none;
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .email-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(82,183,136,0.4);
+  }
+
+  /* ── PRIVACY ── */
+  .privacy-section {
+    background: #ede9e1;
+    padding: 80px 24px;
+  }
+
+  .privacy-inner {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .privacy-inner h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    margin-bottom: 32px;
+    color: var(--text-dark);
+  }
+
+  .privacy-inner p, .privacy-inner li {
+    font-size: 14px;
+    color: var(--text-mid);
+    line-height: 1.9;
+    margin-bottom: 16px;
+  }
+
+  .privacy-inner ul {
+    padding-left: 20px;
+    margin-bottom: 16px;
+  }
+
+  .privacy-inner h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 32px 0 12px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--green-deep);
+    padding: 40px 24px;
+    text-align: center;
+    color: rgba(255,255,255,0.3);
+    font-size: 13px;
+  }
+
+  footer span { color: var(--green-pale); }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-icon">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 17l4-8 4 5 3-4 4 7H3z"/>
+      <circle cx="18" cy="6" r="2.5"/>
+    </svg>
+  </div>
+  <h1>Crest<br><em>Offline Trail Maps</em></h1>
+  <p>Your complete outdoor companion. Explore nature fearlessly — no signal needed.</p>
+  <div class="badge-row">
+    <span class="badge">🌿 Offline AI</span>
+    <span class="badge">🛰️ NASA Hazard Monitor</span>
+    <span class="badge">🆘 SOS Ready</span>
+    <span class="badge">🗺️ Trail Builder</span>
+  </div>
+  <div class="scroll-hint">scroll</div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="section-label">What's inside</div>
+  <div class="section-title">Everything you need<br>in the wild.</div>
+  <div class="features-grid">
+    <div class="feat">
+      <div class="feat-num">01</div>
+      <h3>Franci — Offline AI</h3>
+      <p>Chat with your on-device nature guide. Ask about plants, animals, mushrooms, navigation, and survival — no internet needed.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-num">02</div>
+      <h3>NASA Hazard Monitor</h3>
+      <p>Real-time alerts for wildfires, storms, and geological events powered by NASA EONET data.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-num">03</div>
+      <h3>Offline Trail Maps</h3>
+      <p>Download topographic maps before you go. Plan routes, drop waypoints, track elevation — all without signal.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-num">04</div>
+      <h3>Wildlife Radar</h3>
+      <p>Discover animals and plants within 50 km with live sightings, safety ratings, and scientific names.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-num">05</div>
+      <h3>Community Trails</h3>
+      <p>Save and share routes with other hikers. Discover trails created by the community wherever you go.</p>
+    </div>
+    <div class="feat">
+      <div class="feat-num">06</div>
+      <h3>SOS Emergency</h3>
+      <p>One tap to call 112, share your GPS coordinates, and access offline survival guides.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="faq-inner">
+    <div class="section-label">Support</div>
+    <div class="section-title">Frequently asked<br>questions.</div>
+
+    <div class="faq-item">
+      <div class="faq-q">Does Crest work without internet?</div>
+      <div class="faq-a">Yes. Core features including Franci AI, offline maps, SOS, and survival guides work entirely without a signal. Download maps for your region before heading out for the best experience.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How do I download maps for offline use?</div>
+      <div class="faq-a">Open the Map tab, tap the download button, and select your region. Maps are stored on your device and available immediately without any connection.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How do I share a trail with the community?</div>
+      <div class="faq-a">After creating a route in the Trail Builder, tap Save and choose "Share with Community". No account required — trails are shared anonymously.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What does the SOS screen do?</div>
+      <div class="faq-a">The SOS screen shows your exact GPS coordinates, lets you copy them or send via SMS, dials 112, and provides offline survival guides including signal fire building and shelter construction.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What data does Crest collect?</div>
+      <div class="faq-a">Crest collects your GPS location (for core app features) and anonymous trail data when you share routes. No account is required and no personal data is linked to your identity.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">My map isn't loading — what should I do?</div>
+      <div class="faq-a">Try zooming in or out once to trigger a tile refresh. If you haven't downloaded offline maps for your region, make sure you have an active internet connection on first use.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section">
+  <div class="contact-card">
+    <h2>Need help?</h2>
+    <p>Can't find what you're looking for? Send us a message and we'll get back to you as soon as possible.</p>
+    <a href="mailto:slime.match3@gmail.com" class="email-btn">
+      ✉ slime.match3@gmail.com
+    </a>
+  </div>
+</section>
+
+<!-- PRIVACY -->
+<section class="privacy-section">
+  <div class="privacy-inner">
+    <h2>Privacy Policy</h2>
+    <p>Last updated: May 2026</p>
+
+    <h3>Data We Collect</h3>
+    <ul>
+      <li><strong>Location:</strong> Your GPS position is used for core app features including maps, hazard monitoring, wildlife radar, and SOS. It is not stored on our servers or linked to your identity.</li>
+      <li><strong>User Content:</strong> Trails you choose to share are stored anonymously with no account or personal identifier attached.</li>
+    </ul>
+
+    <h3>Data We Do Not Collect</h3>
+    <p>We do not collect your name, email, phone number, contacts, browsing history, financial information, or any other personal data. No account is required to use Crest.</p>
+
+    <h3>Third-Party Services</h3>
+    <p>Crest uses NASA EONET for hazard data (public domain), OpenTopoMap and OpenStreetMap for map tiles (open data), and Supabase for anonymous trail storage. These services have their own privacy policies.</p>
+
+    <h3>Contact</h3>
+    <p>For privacy questions, contact us at <a href="mailto:slime.match3@gmail.com" style="color: var(--green-main);">slime.match3@gmail.com</a></p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 <span>Crest - Offline Trail Maps</span> · Available on iOS · All rights reserved</p>
+</footer>
+
+</body>
+</html>
